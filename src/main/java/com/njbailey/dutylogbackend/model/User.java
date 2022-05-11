@@ -61,7 +61,7 @@ public class User extends AuditModel {
     @Column
     private Date lastPasswordResetDate = new Date();
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
     		cascade = {
     				CascadeType.PERSIST,
     				CascadeType.MERGE

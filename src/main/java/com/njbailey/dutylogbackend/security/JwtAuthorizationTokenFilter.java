@@ -33,11 +33,11 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
         System.out.println("Processing authentication for " + request.getRequestURL());
 
         final String requestHeader = request.getHeader(tokenHeader);
-
+        System.out.println("Request Header: " + requestHeader);
+        
         Optional<DecodedJWT> optionalToken = Optional.empty();
 
         if (requestHeader != null) {
-            System.out.println("Request Header: " + requestHeader);
             // The authentication token is the part after 'Bearer '
 
             optionalToken = jwtTokenUtil.getDecodedJWT(requestHeader);

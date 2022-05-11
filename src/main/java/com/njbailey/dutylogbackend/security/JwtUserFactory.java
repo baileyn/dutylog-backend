@@ -1,5 +1,6 @@
 package com.njbailey.dutylogbackend.security;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,12 @@ public class JwtUserFactory {
     }
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
-        return authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
-                .collect(Collectors.toList());
+    	List<GrantedAuthority> result = new ArrayList<>();
+    	
+    	for(Authority authority : authorities) {
+    		result.add(new SimpleGrantedAuthority(authority.getName().name()));
+    	}
+    	
+        return result;
     }
 }

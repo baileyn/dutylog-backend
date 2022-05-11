@@ -1,22 +1,26 @@
 package com.njbailey.dutylogbackend.controller;
 
-import com.njbailey.dutylogbackend.model.User;
-import com.njbailey.dutylogbackend.repository.UserRepository;
-import com.njbailey.dutylogbackend.security.JwtTokenUtil;
-import com.njbailey.dutylogbackend.security.service.JwtAuthenticationResponse;
+import javax.annotation.Generated;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Generated;
-import javax.validation.Valid;
-import java.util.ArrayList;
+import com.njbailey.dutylogbackend.ResourceNotFoundException;
+import com.njbailey.dutylogbackend.model.User;
+import com.njbailey.dutylogbackend.repository.UserRepository;
+import com.njbailey.dutylogbackend.security.JwtTokenUtil;
+import com.njbailey.dutylogbackend.security.service.JwtAuthenticationResponse;
 
 @Controller
 @RequestMapping("/register")
@@ -49,5 +53,13 @@ public class RegistrationController {
 
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+    }
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    	User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " doesn't exist."));
+    	userRepository.delete(user);
+    	return ResponseEntity.ok(null);
     }
 }
