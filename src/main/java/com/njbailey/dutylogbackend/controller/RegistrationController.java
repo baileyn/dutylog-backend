@@ -1,4 +1,4 @@
-package com.njbailey.dutylogbackend.controller.registration;
+package com.njbailey.dutylogbackend.controller;
 
 import com.njbailey.dutylogbackend.model.User;
 import com.njbailey.dutylogbackend.repository.UserRepository;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("/register")
 public class RegistrationController {
     @Autowired
     private UserRepository userRepository;

@@ -60,8 +60,12 @@ public class TodoTaskController {
                 todoTask.setDescription(description);
             }
 
-            todoTask.setCompletedBy(user);
-            todoTask.setCompleted(todoTaskRequest.isCompleted());
+            boolean isCompleted = todoTaskRequest.isCompleted();
+            User completedBy = isCompleted ? user : null;
+            
+            todoTask.setCompletedBy(completedBy);
+	        todoTask.setCompleted(isCompleted);
+            
             return todoTaskRepository.save(todoTask);
         }).orElseThrow(() -> new ResourceNotFoundException("TodoTask not found with ID=" + id));
     }

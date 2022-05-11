@@ -1,14 +1,16 @@
 package com.njbailey.dutylogbackend.security;
 
-import com.njbailey.dutylogbackend.model.User;
-import com.njbailey.dutylogbackend.model.security.Authority;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.njbailey.dutylogbackend.model.User;
+import com.njbailey.dutylogbackend.model.security.Authority;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtUserFactory {
