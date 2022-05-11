@@ -8,5 +8,6 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 @Getter
 public class JwtAuthenticationResponse implements Serializable {
+    private final boolean successful;
     private final String token;
 }

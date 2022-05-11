@@ -46,7 +46,7 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(true, token));
     }
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
@@ -62,11 +62,11 @@ public class AuthenticationController {
 
             if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
                 String refreshedToken = jwtTokenUtil.generateToken(user);
-                return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+                return ResponseEntity.ok(new JwtAuthenticationResponse(true, refreshedToken));
             }
         }
 
-        return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.badRequest().body(new JwtAuthenticationResponse(false, null));
     }
 
     @ExceptionHandler({AuthenticationException.class})

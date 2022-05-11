@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/tasks")
 public class TodoTaskController {
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private TodoTaskRepository todoTaskRepository;
 
@@ -36,10 +39,13 @@ public class TodoTaskController {
         return todoTaskRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public TodoTask getTodoTaskById(@PathVariable Long id) {
-        return todoTaskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("TodoTask not found with ID=" + id));
+    @GetMapping("/{dateString}")
+    public Collection<TodoTask> getTodoTasksByDate(@PathVariable String dateString) {
+        try {
+            return todoTaskRepository.findTodoTasksByDate(DATE_FORMAT.parse(dateString));
+        } catch (ParseException e) {
+            return new ArrayList();
+        }
     }
 
     @PostMapping

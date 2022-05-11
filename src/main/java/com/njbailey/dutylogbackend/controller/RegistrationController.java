@@ -41,7 +41,7 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<?> registerUser(@Valid @RequestBody User request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(new JwtAuthenticationResponse(false, null));
         }
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -52,7 +52,7 @@ public class RegistrationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(true, token));
     }
     
     @DeleteMapping("/{id}")
