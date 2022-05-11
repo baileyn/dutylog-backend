@@ -45,7 +45,6 @@ public class AuthenticationController {
 	
 	@RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
-
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         // Reload password post-security so we can generate the token

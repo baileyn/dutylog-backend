@@ -64,7 +64,4 @@ public class User extends AuditModel {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private List<Authority> authorities;
-	
-	@Column
-	private int access = 0;
 }

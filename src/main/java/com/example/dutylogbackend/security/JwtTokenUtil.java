@@ -25,9 +25,8 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.expiration}")
     private Long expiration;
     
-    private Algorithm algorithm = Algorithm.HMAC256(secret);
-    private JWTVerifier verifier = 
-    		JWT.require(algorithm).withIssuer(issuer).build();
+    private Algorithm algorithm;
+    private JWTVerifier verifier;
 
     private boolean ignoreTokenExpiration(DecodedJWT token) {
         // here you specify tokens, for that the expiration is ignored
@@ -46,7 +45,7 @@ public class JwtTokenUtil implements Serializable {
             .withSubject(subject)
             .withIssuedAt(createdDate)
             .withExpiresAt(expirationDate)
-            .sign(algorithm);
+            .sign(getAlgorithm());
     }
 
     public Boolean canTokenBeRefreshed(DecodedJWT token, Date lastPasswordReset) {
@@ -69,7 +68,7 @@ public class JwtTokenUtil implements Serializable {
     
     public Optional<DecodedJWT> getDecodedJWT(String token) {
     	try {
-    		return Optional.of(verifier.verify(token));
+    		return Optional.of(getVerifier().verify(token));
     	} catch(JWTVerificationException e) {
     		return Optional.empty();
     	}
@@ -86,5 +85,21 @@ public class JwtTokenUtil implements Serializable {
 
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
+    }
+
+    private Algorithm getAlgorithm() {
+        if(algorithm == null) {
+            algorithm = Algorithm.HMAC256(secret);
+        }
+
+        return algorithm;
+    }
+
+    private JWTVerifier getVerifier() {
+        if(verifier == null) {
+            verifier = JWT.require(getAlgorithm()).withIssuer(issuer).build();
+        }
+
+        return verifier;
     }
 }
