@@ -55,8 +55,6 @@ public class TodoTaskController {
 
     @PutMapping("/{id}")
     public TodoTask updateTodoTask(@PathVariable Long id, @RequestBody TodoTask todoTaskRequest, @RequestHeader("${jwt.header}") String token) {
-        System.out.println(token);
-
         DecodedJWT decodedJWT = jwtTokenUtil.getDecodedJWT(token).orElseThrow(() -> new AuthenticationException("Not authenticated."));
         User user = userRepository.findByUsername(decodedJWT.getSubject()).orElseThrow(() -> new AuthenticationException("No user found. Incident has been reported."));
 
