@@ -52,9 +52,8 @@ public class AuthenticationController {
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
-        final String tokenString = authToken.substring(7);
 
-        Optional<DecodedJWT> optionalToken = jwtTokenUtil.getDecodedJWT(tokenString);
+        Optional<DecodedJWT> optionalToken = jwtTokenUtil.getDecodedJWT(authToken);
         if (optionalToken.isPresent()) {
             DecodedJWT token = optionalToken.get();
 

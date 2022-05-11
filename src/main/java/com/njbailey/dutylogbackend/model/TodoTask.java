@@ -24,4 +24,7 @@ public class TodoTask extends AuditModel {
 
     @Column(nullable = false)
     private boolean completed = false;
+
+    @Column
+    private User completedBy;
 }

@@ -36,12 +36,11 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 
         Optional<DecodedJWT> optionalToken = Optional.empty();
 
-        if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
+        if (requestHeader != null) {
             System.out.println("Request Header: " + requestHeader);
             // The authentication token is the part after 'Bearer '
-            String authToken = requestHeader.substring(7);
 
-            optionalToken = jwtTokenUtil.getDecodedJWT(authToken);
+            optionalToken = jwtTokenUtil.getDecodedJWT(requestHeader);
         }
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
